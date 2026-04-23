@@ -8,11 +8,35 @@
   ],
   "routes": [
     {
+      "src": "/api-docs/(.*)",
+      "dest": "src/index.js"
+    },
+    {
       "src": "/(.*)",
       "dest": "src/index.js"
     }
   ],
   "env": {
     "NODE_ENV": "production"
-  }
+  },
+  "headers": [
+    {
+      "source": "/api-docs/(.*)\\.css",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/css; charset=utf-8"
+        }
+      ]
+    },
+    {
+      "source": "/api-docs/(.*)\\.js",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/javascript; charset=utf-8"
+        }
+      ]
+    }
+  ]
 }

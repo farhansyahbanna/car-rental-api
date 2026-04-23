@@ -24,9 +24,22 @@ connectDB();
 const app = express();
 
 // ─── Security Middleware ───────────────────────────────────────────
-app.use(helmet({
-  contentSecurityPolicy: false, // Disable for Swagger UI
-}));
+app.use((req, res, next) => {
+  if (req.path.startsWith('/api-docs')) {
+    // Skip helmet for Swagger UI
+    return next();
+  }
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        styleSrc: ["'self'", "'unsafe-inline'"],
+        scriptSrc: ["'self'", "'unsafe-inline'"],
+        imgSrc: ["'self'", 'data:', 'https:'],
+      },
+    },
+  })(req, res, next);
+});
 
 app.use(cors({
   origin: process.env.FRONTEND_URL || '*',

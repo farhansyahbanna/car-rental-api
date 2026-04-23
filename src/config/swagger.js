@@ -4,7 +4,7 @@ const options = {
   definition: {
     openapi: '3.0.0',
     info: {
-      title: '🚗 Car Rental API',
+      title: 'Car Rental API',
       version: '1.0.0',
       description: `
 ## Sistem Penyewaan Mobil API
@@ -38,11 +38,7 @@ REST API lengkap untuk sistem penyewaan mobil dengan fitur:
     servers: [
       {
         url: process.env.APP_URL || 'http://localhost:5000',
-        description: 'Development Server',
-      },
-      {
-        url: 'https://car-rental-api.vercel.app',
-        description: 'Production Server',
+        description: process.env.NODE_ENV === 'production' ? 'Production Server' : 'Development Server',
       },
     ],
     components: {
