@@ -134,7 +134,7 @@ const bookingSchema = new mongoose.Schema(
 );
 
 // Generate booking code
-bookingSchema.pre('save', async function (next) {
+bookingSchema.pre('save', async function () {
   if (!this.bookingCode) {
     const date = new Date();
     const dateStr = date.toISOString().slice(0, 10).replace(/-/g, '');
@@ -148,8 +148,6 @@ bookingSchema.pre('save', async function (next) {
     this.duration = diff > 0 ? diff : 1;
     this.totalPrice = this.duration * this.pricePerDay;
   }
-
-  next();
 });
 
 bookingSchema.index({ user: 1, status: 1 });

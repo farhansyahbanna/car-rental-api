@@ -120,14 +120,13 @@ const paymentSchema = new mongoose.Schema(
 );
 
 // Generate payment code
-paymentSchema.pre('save', async function (next) {
+paymentSchema.pre('save', async function () {
   if (!this.paymentCode) {
     const date = new Date();
     const dateStr = date.toISOString().slice(0, 10).replace(/-/g, '');
     const count = await mongoose.model('Payment').countDocuments();
     this.paymentCode = `PAY-${dateStr}-${String(count + 1).padStart(3, '0')}`;
   }
-  next();
 });
 
 module.exports = mongoose.model('Payment', paymentSchema);

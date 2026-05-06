@@ -3,7 +3,6 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
-const rateLimit = require('express-rate-limit');
 const swaggerUi = require('swagger-ui-express');
 
 const connectDB = require('./config/database');
@@ -47,30 +46,6 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 
-// Rate limiting
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100,
-  message: {
-    success: false,
-    message: 'Terlalu banyak permintaan. Coba lagi dalam 15 menit.',
-  },
-  standardHeaders: true,
-  legacyHeaders: false,
-});
-
-const authLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 10,
-  message: {
-    success: false,
-    message: 'Terlalu banyak percobaan login. Coba lagi dalam 15 menit.',
-  },
-});
-
-app.use('/api', limiter);
-app.use('/api/auth/login', authLimiter);
-app.use('/api/auth/register', authLimiter);
 
 // ─── Body Parsing Middleware ───────────────────────────────────────
 app.use(express.json({ limit: '10mb' }));
